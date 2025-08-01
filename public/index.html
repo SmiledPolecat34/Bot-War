@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Manette BotWar</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding: 2rem
+        }
+
+        button {
+            margin: .5rem;
+            padding: .8rem 1.2rem;
+            font-size: 1rem
+        }
+
+        #status {
+            margin-top: 1rem;
+            color: green
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Manette BotWar</h1>
+
+    <div>
+        <button data-move="UP">Haut</button>
+        <button data-move="DOWN">Bas</button>
+        <button data-move="LEFT">Gauche</button>
+        <button data-move="RIGHT">Droite</button>
+        <button data-move="STAY">Rester</button>
+    </div>
+    <div>
+        <button data-action="COLLECT">Collecter</button>
+        <button data-action="BOMB">Bombe</button>
+        <button data-action="NONE">Aucune</button>
+    </div>
+
+    <p id="status">—</p>
+    <script>
+        let move = 'STAY';
+        let action = 'NONE';
+
+        const statusEl = document.getElementById('status');
+
+        async function sendCommand() {
+            const payload = {
+                move,
+                action
+            };
+            console.log('[MANETTE] Envoi payload →', payload);
+
+            try {
+                const res = await fetch('/action', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                console.log('[MANETTE] HTTP status:', res.status);
+
+                const data = await res.json();
+                console.log('[MANETTE] Response body:', data);
+
+                if (res.ok) {
+                    statusEl.textContent = `Envoyé → ${move} + ${action}`;
+                } else {
+                    statusEl.textContent = `Erreur: ${data.error || res.status}`;
+                }
+            } catch (err) {
+                console.error('[MANETTE] Fetch error:', err);
+                statusEl.textContent = `Fetch error: ${err.message}`;
+            }
+        }
+
+        document.querySelectorAll('[data-move]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                move = btn.dataset.move;
+                console.log('[MANETTE] Bouton MOVE cliqué →', move);
+                sendCommand();
+            });
+        });
+        document.querySelectorAll('[data-action]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                action = btn.dataset.action;
+                console.log('[MANETTE] Bouton ACTION cliqué →', action);
+                sendCommand();
+            });
+        });
+
+        console.log('[MANETTE] Initialisation → move=STAY, action=NONE');
+        sendCommand();
+    </script>
+</body>
+
+</html>
