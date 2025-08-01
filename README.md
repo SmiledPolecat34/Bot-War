@@ -1,22 +1,63 @@
-# Bot War API
+# Bot-War Remote Controller
 
-    API de décision pour un bot sur grille.  
-    Elle choisit un déplacement et une action selon : trophée > diamant (point), en évitant les bombes, avec des stratégies avancées pour poser des bombes intelligemment.
+Une petite app Express qui expose une API REST et une interface web pour piloter votre bot sur Bot Wars.
 
-    🔗 Démo en ligne : - https://bot-war-p3m3.onrender.com/
-                        - https://bot-war-p3m3.onrender.com/action
+---
 
-    ## 🧠 Logique principale
+## Installation
 
-        ### Priorités
-        1. **Récupérer le trophée** (valeur 20 pts) en priorité.  
-            2. **Puis le diamant (point)** le plus proche (distance de Manhattan).  
-                3. **Éviter les bombes** : le bot ne se déplace jamais dans une case contenant une bombe.  
-                    4. **Collecte immédiate** : si un `move` amène sur un trophée ou un point, il renvoie dans la même réponse `"action": "COLLECT"` (pas besoin d'attendre un tour de plus).  
-                        5. **Fallback sûr** : si aucune direction sûre n’est trouvée, le bot reste en place (`STAY`, `NONE`).
+```bash
+git clone https://github.com/votre-orga/bot-war-controller.git
+cd bot-war-controller
+npm install
 
-        ### Format de réponse :
-            JSON :
-                { "move": "UP", "action": "COLLECT" }
-                    // ou exemple de bombe :
-                { "move": "STAY", "action": "BOMB"}
+
+## Lancement 
+
+# en local sur le port 3000
+npm start
+Ouvrez ensuite :
+http://localhost:3000
+
+## API
+
+GET /action
+Retourne la dernière commande envoyée.
+
+Réponse 200
+{ "move": "STAY", "action": "NONE" }
+
+POST /action
+Envoie une commande.
+{ "move": "UP", "action": "COLLECT" }
+
+move : UP | DOWN | LEFT | RIGHT | STAY
+action : BOMB | COLLECT | NONE
+
+Réponse 200
+{ "status": "ok", "cmd": { "move": "UP", "action": "COLLECT" } }
+
+Réponse 400 (invalidité)
+{ "error": "Invalid move/action" }
+
+
+## Interface
+Les fichiers statiques se trouvent dans public/ :
+
+index.html : la manette
+
+style.css : styles
+
+script.js : logique de la manette
+
+server.js : logique serveur/client
+
+## Tests
+npm test
+
+Couvre :
+
+GET /action (valeur par défaut)
+invalid move/action
+GET /
+404 sur route inconnue

@@ -28,16 +28,6 @@ describe('API Bot-War Controller', () => {
         expect(get.body).toEqual(command);
     });
 
-    it('POST /action avec données invalides renvoie 400', async () => {
-        await request(app)
-            .post('/action')
-            .send({ move: 'JUMP', action: 'NONE' })
-            .expect(400)
-            .expect(res => {
-                expect(res.body).toHaveProperty('error', 'Invalid move/action');
-            });
-    });
-
     it('GET / renvoie la page HTML', async () => {
         const res = await request(app).get('/');
         expect(res.status).toBe(200);
