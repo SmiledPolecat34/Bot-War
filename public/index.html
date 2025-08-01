@@ -4,108 +4,29 @@
 <head>
     <meta charset="utf-8">
     <title>Manette BotWar</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        #controller {
-            background: #ffffff;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            display: grid;
-            grid-template-areas:
-                ".    up    ."
-                "left stay right"
-                ".   down   ."
-                "acts acts acts";
-            grid-template-columns: 64px 64px 64px;
-            grid-auto-rows: 64px;
-            grid-gap: 12px;
-        }
-
-        #controller button {
-            border: none;
-            background-color: #6200ea;
-            color: #fff;
-            font-size: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        #controller button:hover {
-            background-color: #3700b3;
-        }
-
-        button[data-move="UP"] {
-            grid-area: up;
-        }
-
-        button[data-move="LEFT"] {
-            grid-area: left;
-        }
-
-        button[data-move="DOWN"] {
-            grid-area: down;
-        }
-
-        button[data-move="RIGHT"] {
-            grid-area: right;
-        }
-
-        button[data-move="STAY"] {
-            grid-area: stay;
-        }
-
-        button[data-action] {
-            grid-area: acts;
-            flex: 1;
-        }
-
-        #controller .actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #status {
-            margin-top: 16px;
-            text-align: center;
-            font-weight: bold;
-            color: #333;
-        }
-    </style>
 </head>
 
 <body>
     <h1>Manette BotWar</h1>
 
-    <div>
-        <button data-move="UP">Haut</button>
-        <button data-move="DOWN">Bas</button>
-        <button data-move="LEFT">Gauche</button>
-        <button data-move="RIGHT">Droite</button>
-        <button data-move="STAY">Rester</button>
+    <h1>Manette BotWar</h1>
+
+    <div id="controller-wrapper">
+        <div id="directional">
+            <button data-move="UP">↑ Haut</button>
+            <button data-move="LEFT">← Gauche</button>
+            <button data-move="STAY">• Rester</button>
+            <button data-move="RIGHT">Droite →</button>
+            <button data-move="DOWN">Bas ↓</button>
+        </div>
+        <div id="actions">
+            <button data-action="COLLECT">Collecter</button>
+            <button data-action="BOMB">Bombe</button>
+            <button data-action="NONE">Aucune</button>
+        </div>
     </div>
-    <div>
-        <button data-action="COLLECT">Collecter</button>
-        <button data-action="BOMB">Bombe</button>
-        <button data-action="NONE">Aucune</button>
-    </div>
+    <p id="status">—</p>
+
 
     <p id="status">—</p>
     <script>

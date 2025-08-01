@@ -25,8 +25,3 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t bot-war .
-
-      - name: Déclenchement du déploiement sur Render
-        if: success()
-        run: |
-          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
